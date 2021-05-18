@@ -1,0 +1,23 @@
+body{
+    height: 100%;
+}
+
+#table_whole {
+    height: 450px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+
+}
+table{
+    position: relative;
+}
+
+th{
+    position: sticky;
+    background-color:#C0C0C0;
+    top: 0;
+}
+
+table.table-hover tbody tr:hover {
+    background-color: #C0C0C0;
+}

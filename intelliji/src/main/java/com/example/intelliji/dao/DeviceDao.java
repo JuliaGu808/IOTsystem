@@ -17,10 +17,8 @@ import java.util.Properties;
 
 public class DeviceDao {
 
-    Properties p = new Properties();
-
     public boolean addData(DeviceEsp32Dht11 d){
-        String query = " insert into iotdevice (id, deviceName, deviceHolder, temperature, humidity, timestamp) values (?, ?, ?, ?, ?, ?)";
+        String query = " insert into iotdevice (deviceName, deviceHolder, temperature, humidity, recordtime) values (?, ?, ?, ?, ?)";
         int rowChanged = 0;
 
         try (Connection con = DriverManager.getConnection(System.getenv("connectionstring"),
@@ -28,12 +26,11 @@ public class DeviceDao {
                 System.getenv("spring.datasource.password"));
              PreparedStatement stmt = con.prepareStatement(query)){
 
-            stmt.setInt(1, d.getId());
-            stmt.setString(2, d.getDeviceName());
-            stmt.setString(3, d.getDeviceHolder());
-            stmt.setString(4, d.getTemperature());
-            stmt.setString(5, d.getHumidity());
-            stmt.setString(6, d.getDateTime());
+            stmt.setString(1, d.getDeviceName());
+            stmt.setString(2, d.getDeviceHolder());
+            stmt.setString(3, d.getTemperature());
+            stmt.setString(4, d.getHumidity());
+            stmt.setString(5, d.getRecordtime());
             rowChanged = stmt.executeUpdate();
             if (rowChanged == 1){
                 return true;
@@ -44,4 +41,29 @@ public class DeviceDao {
         }
         return false;
     }
+
+    public static List<DeviceEsp32Dht11> getAllDummy(){
+        List<DeviceEsp32Dht11> devicelist = new ArrayList<>();
+        try(
+                Connection connection = DriverManager.getConnection(System.getenv("connectionstring"),
+                        System.getenv("spring.datasource.username"),
+                        System.getenv("spring.datasource.password"));
+                Statement statement = connection.createStatement();
+                ResultSet resultSet = statement.executeQuery("select * from iot20.iotdevice order by recordtime desc");
+        ){
+            while (resultSet.next()){
+                int id = resultSet.getInt("id");
+                String deviceName = resultSet.getString("deviceName");
+                String deviceHolder = resultSet.getString("deviceHolder");
+                String temperature = resultSet.getString("temperature");
+                String humidity = resultSet.getString("humidity");
+                String recordtime = resultSet.getString("recordtime");
+                devicelist.add(new DeviceEsp32Dht11(deviceName, deviceHolder, temperature, humidity, recordtime));
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return devicelist;
+    }
+
 }
