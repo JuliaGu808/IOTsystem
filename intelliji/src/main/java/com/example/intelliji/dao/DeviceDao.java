@@ -52,7 +52,6 @@ public class DeviceDao {
                 ResultSet resultSet = statement.executeQuery("select * from iot20.iotdevice order by recordtime desc");
         ){
             while (resultSet.next()){
-                int id = resultSet.getInt("id");
                 String deviceName = resultSet.getString("deviceName");
                 String deviceHolder = resultSet.getString("deviceHolder");
                 String temperature = resultSet.getString("temperature");

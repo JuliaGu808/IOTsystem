@@ -15,14 +15,12 @@ public class DeviceControler {
 
     @PostMapping("/data/add")
     public boolean addData(@RequestBody DeviceEsp32Dht11 d){
-        System.out.println("add"+d);
         return deviceDao.addData(d);
 
     }
 
     @GetMapping("/all")
     public List<DeviceEsp32Dht11> getAll(){
-        System.out.println("all");
         return DeviceDao.getAllDummy();
     }
 
