@@ -6,10 +6,6 @@
 #include "wifiSetup.h"
 #include "hidden.h"
 
-
-#define DEVICE_NAME "Sensor1"
-#define DEVICE_HOLDER "Johnny"
-
 const char* serverName = SERVER_NAME;
 
 unsigned long lastTime = 0;
