@@ -5,66 +5,69 @@ import java.security.Timestamp;
 import java.time.LocalDateTime;
 
 public class DeviceEsp32Dht11 implements Serializable {
-    private int id;
     private String deviceName, deviceHolder;
     private String temperature, humidity;
-    private String timestamp;
+    private String recordtime;
 
     public DeviceEsp32Dht11() {}
 
-    public DeviceEsp32Dht11(int id, String deviceName, String deviceHolder, String timestamp) {
-        this.id = id;
+    public DeviceEsp32Dht11(String deviceName, String deviceHolder, String temperature, String humidity, String recordtime) {
         this.deviceName = deviceName;
         this.deviceHolder = deviceHolder;
-        this.timestamp = timestamp;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public void setDeviceName(String deviceName) {
-        this.deviceName = deviceName;
-    }
-
-    public void setDeviceHolder(String deviceHolder) {
-        this.deviceHolder = deviceHolder;
-    }
-
-    public void setTemperature(String temperature) {
         this.temperature = temperature;
-    }
-
-    public void setHumidity(String humidity) {
         this.humidity = humidity;
-    }
-
-    public void setDateTime(String dateTime) {
-        this.timestamp = dateTime;
-    }
-
-    public int getId() {
-        return id;
+        this.recordtime = recordtime;
     }
 
     public String getDeviceName() {
         return deviceName;
     }
 
+    public void setDeviceName(String deviceName) {
+        this.deviceName = deviceName;
+    }
+
     public String getDeviceHolder() {
         return deviceHolder;
+    }
+
+    public void setDeviceHolder(String deviceHolder) {
+        this.deviceHolder = deviceHolder;
     }
 
     public String getTemperature() {
         return temperature;
     }
 
+    public void setTemperature(String temperature) {
+        this.temperature = temperature;
+    }
+
     public String getHumidity() {
         return humidity;
     }
 
-    public String getDateTime() {
-        return timestamp;
+    public void setHumidity(String humidity) {
+        this.humidity = humidity;
+    }
+
+    public String getRecordtime() {
+        return recordtime;
+    }
+
+    public void setRecordtime(String recordtime) {
+        this.recordtime = recordtime;
+    }
+
+    @Override
+    public String toString() {
+        return "DeviceEsp32Dht11{" +
+                "deviceName='" + deviceName + '\'' +
+                ", deviceHolder='" + deviceHolder + '\'' +
+                ", temperature='" + temperature + '\'' +
+                ", humidity='" + humidity + '\'' +
+                ", recordtime='" + recordtime + '\'' +
+                '}';
     }
 }
 

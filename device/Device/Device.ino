@@ -4,19 +4,18 @@
 #include <DHT.h>
 #include <ArduinoJson.h>
 #include "wifiSetup.h"
+#include "hidden.h"
 
 
 #define DEVICE_NAME "Sensor1"
 #define DEVICE_HOLDER "Johnny"
 
-const char* serverName = "http://192.168.1.5:8080/data/add";
+const char* serverName = SERVER_NAME;
 
 unsigned long lastTime = 0;
 unsigned long timerDelay = 10000; //10 sekunders delay
 
-
-
-DHT dht(32, DHT11);
+DHT dht(DHTPORT, DHT11);
 
 void setup() 
 {
@@ -52,7 +51,7 @@ void loop()
       message["humidity"] = humidityString;
       int sweSummerTime = time(NULL) + (3600 * 2);
       sprintf (timeString, "%i", time(NULL));
-      message["timestamp"] = timeString;
+      message["recordtime"] = timeString;
 
       serializeJson(message, serializedMessage);
       http.addHeader("Content-Type", "application/json");
