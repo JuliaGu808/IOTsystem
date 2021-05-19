@@ -11,12 +11,10 @@ import java.util.List;
 @RequestMapping("/DeviceDBService")
 public class DeviceControler {
 
-    private static DeviceDao deviceDao = new DeviceDao();
 
     @PostMapping("/data/add")
     public boolean addData(@RequestBody DeviceEsp32Dht11 d){
-        return deviceDao.addData(d);
-
+        return DeviceDao.addData(d);
     }
 
     @GetMapping("/all")
