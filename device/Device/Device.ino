@@ -3,6 +3,7 @@
 #include <HTTPClient.h>
 #include <DHT.h>
 #include <ArduinoJson.h>
+#include <WebSockets2_Generic.h>
 #include "wifiSetup.h"
 #include "hidden.h"
 
@@ -10,14 +11,40 @@ const char* serverName = SERVER_NAME;
 
 unsigned long lastTime = 0;
 unsigned long timerDelay = 10000; //10 sekunders delay
+//using namespace websockets2_generic;
+
+//WebsocketsClient client;
+//bool connected = false;
 
 DHT dht(DHTPORT, DHT11);
+
+void onEventsCallback(WebsocketsEvent event, String data) 
+{
+  if (event == WebsocketsEvent::ConnectionOpened) 
+  {
+    Serial.println("Connnection Opened");
+  } 
+  else if (event == WebsocketsEvent::ConnectionClosed) 
+  {
+    Serial.println("Connnection Closed");
+  } 
+  else if (event == WebsocketsEvent::GotPing) 
+  {
+    Serial.println("Got a Ping!");
+  } 
+  else if (event == WebsocketsEvent::GotPong) 
+  {
+    Serial.println("Got a Pong!");
+  }
+}
+
 
 void setup() 
 {
   Serial.begin(115200);
   initWifi(); 
   Serial.println("Wifi OK");
+  initSocket();
   configTime(3600, 0 , "pool.ntp.org");  //Uppdatera klockan mot time-server.
   Serial.print(time(NULL));
   dht.begin();
@@ -29,7 +56,7 @@ void loop()
   if ((millis() - lastTime) > timerDelay) 
   {
     
-    if(WiFi.status()== WL_CONNECTED)
+    if(WiFi.status()== WL_CONNECTED && connected)
     {
       char serializedMessage[255];
       char tempString[10];
@@ -53,6 +80,7 @@ void loop()
       http.addHeader("Content-Type", "application/json");
       //int httpResponseCode = http.POST("{\"deviceName\":\"xxxxxx\",\"deviceHolder\":\"zzzzz\",\"temperature\":\"bbbbb\",\"humidity\":\"dddddd\",\"timestamp\":\"hhhhh\"}");
       int httpResponseCode = http.POST(serializedMessage);
+      client.send(serializedMessage);
       Serial.println(serializedMessage);
       Serial.print("HTTP Respone: ");
       Serial.println(httpResponseCode);
