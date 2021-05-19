@@ -10,10 +10,8 @@ import java.io.FileInputStream;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.Date;
-import java.util.List;
-import java.util.Properties;
 
 public class DeviceDao {
 
@@ -93,6 +91,15 @@ public class DeviceDao {
             e.printStackTrace();
         }
         return devicelist;
+    }
+
+    public static DeviceEsp32Dht11 DeviceConvert(Map map){
+            String deviceHolder = String.valueOf(map.get("deviceHolder"));
+            String deviceName = String.valueOf(map.get("deviceName"));
+            String temperature = String.valueOf(map.get("temperature"));
+            String humidity = String.valueOf(map.get("humidity"));
+            String recordtime = String.valueOf(map.get("recordtime"));
+            return new DeviceEsp32Dht11(deviceHolder, deviceName, temperature, humidity, recordtime);
     }
 
 }

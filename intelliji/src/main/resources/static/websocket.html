@@ -12,22 +12,27 @@
 <noscript><h2 style="color: #ff0000">Seems your browser doesn't support Javascript! Websocket relies on Javascript being
   enabled. Please enable
   Javascript and reload this page!</h2></noscript>
-<div id="main-content" class="container">
-  <div class="row">
-    <div class="col-md-12" style="height:450px">
-      <table id="conversation" class="table ">
+<div class="container">
+  <h2 style="text-align: center">IOT 20 Realtime data</h2>
+
+
+  <div class="row table_whole">
+    <div class="col-md-12" >
+      <table class="table table-striped table-hover">
         <thead>
         <tr>
-          <th>Esp 32 Board</th>
+          <th>Device</th>
+          <th>Temperature</th>
+          <th>Humidity</th>
+          <th>Record Time</th>
+          <th>Reporter</th>
         </tr>
         </thead>
-        <tbody id="greetings" style="overflow-y: auto">
+        <tbody id="device_real_data">
         </tbody>
       </table>
     </div>
   </div>
-
-
 </div>
 
 </body>

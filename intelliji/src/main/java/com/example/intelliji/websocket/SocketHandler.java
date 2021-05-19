@@ -1,5 +1,7 @@
 package com.example.intelliji.websocket;
 
+import com.example.intelliji.dao.DeviceDao;
+import com.example.intelliji.model.DeviceEsp32Dht11;
 import com.google.gson.Gson;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.TextMessage;
@@ -20,9 +22,9 @@ public class SocketHandler extends TextWebSocketHandler {
             throws InterruptedException, IOException {
         Map value = new Gson().fromJson(message.getPayload(), Map.class);
         System.out.println("handleTextMessage "+message.getPayload());
-       // Response response = DeviceConvert.DeviceConvert(value);
+        DeviceEsp32Dht11 device = DeviceDao.DeviceConvert(value);
         for(WebSocketSession webSocketSession: sessions){
-            webSocketSession.sendMessage(new TextMessage("got"));
+            webSocketSession.sendMessage(new TextMessage(""+device));
         }
     }
 
