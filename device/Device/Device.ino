@@ -46,7 +46,7 @@ void loop()
       message["temperature"] = tempString;
       message["humidity"] = humidityString;
       int sweSummerTime = time(NULL) + (3600 * 2);
-      sprintf (timeString, "%i", time(NULL));
+      sprintf (timeString, "%i", (time(NULL) + (3600 * 2)));
       message["recordtime"] = timeString;
 
       serializeJson(message, serializedMessage);
