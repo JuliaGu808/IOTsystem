@@ -3,10 +3,7 @@ ws = new WebSocket('ws://localhost:8080/device');
 ws.onmessage = function(data){
     showGreeting(data.data);
 }
-//window.onbeforeunload = function() {
-//    ws.onclose = function () {}; // disable onclose handler first
-//    ws.close();
-//};
+
 
 function showGreeting(message) {
     var arr = message.split(",");

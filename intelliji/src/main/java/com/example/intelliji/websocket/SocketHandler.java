@@ -4,7 +4,11 @@ import com.example.intelliji.dao.DeviceDao;
 import com.example.intelliji.model.DeviceEsp32Dht11;
 import com.google.gson.Gson;
 import org.springframework.stereotype.Component;
+
 import org.springframework.web.socket.CloseStatus;
+
+import org.springframework.web.bind.annotation.RequestBody;
+
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
@@ -15,8 +19,9 @@ import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 @Component
-public class SocketHandler extends TextWebSocketHandler
-{
+
+public class SocketHandler extends TextWebSocketHandler {
+
     List<WebSocketSession> sessions = new CopyOnWriteArrayList<>();
 
     @Override
@@ -50,6 +55,7 @@ public class SocketHandler extends TextWebSocketHandler
         System.out.println(status.toString());
         sessions.remove(session); //Ta bort stängd session ur sessions listan.
     }
+
 
 
 }
