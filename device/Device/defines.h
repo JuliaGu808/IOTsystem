@@ -22,12 +22,4 @@
 // Debug Level from 0 to 4
 #define _WEBSOCKETS_LOGLEVEL_     3
 
-//const char* ssid = "Bahnhof-2.4G-9ELL7N"; //Enter SSID
-//const char* password = "Julia808"; //Enter Password
-
-
-//const char* websockets_server_host = "serverip_or_name"; //Enter server address
-
-
-
 #endif      //defines_h
