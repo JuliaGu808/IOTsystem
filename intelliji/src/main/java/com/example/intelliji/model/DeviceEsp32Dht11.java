@@ -61,13 +61,11 @@ public class DeviceEsp32Dht11 implements Serializable {
 
     @Override
     public String toString() {
-        return "DeviceEsp32Dht11{" +
-                "deviceName='" + deviceName + '\'' +
-                ", deviceHolder='" + deviceHolder + '\'' +
-                ", temperature='" + temperature + '\'' +
-                ", humidity='" + humidity + '\'' +
-                ", recordtime='" + recordtime + '\'' +
-                '}';
+        return "deviceName=" + deviceName +
+                ",deviceHolder=" + deviceHolder +
+                ",temperature=" + temperature +
+                ",humidity=" + humidity +
+                ",recordtime=" + recordtime;
     }
 }
 

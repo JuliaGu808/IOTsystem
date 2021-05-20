@@ -26,6 +26,7 @@ void loop()
 {
   if ((millis() - lastTime) > timerDelay) 
   {
+  
     if(WiFi.status()== WL_CONNECTED && connected)
     {
       char serializedMessage[255];
@@ -33,8 +34,8 @@ void loop()
       char humidityString[10];
       char timeString[15];
       
-      HTTPClient http;
-      http.begin(HTTP_SERVER_ADRESS);
+     // HTTPClient http;
+     // http.begin(HTTP_SERVER_ADRESS);
       
       DynamicJsonDocument message(1024);
       message["deviceName"] = DEVICE_NAME;
@@ -53,14 +54,14 @@ void loop()
       message["recordtime"] = timeString;
 
       serializeJson(message, serializedMessage);
-      http.addHeader("Content-Type", "application/json");
-      int httpResponseCode = http.POST(serializedMessage); 
+     // http.addHeader("Content-Type", "application/json");
+     // int httpResponseCode = http.POST(serializedMessage); 
       client.send(serializedMessage);
       Serial.println("Could not send message to websocket, trying to reconnect...");
       Serial.println(serializedMessage);
       Serial.print("HTTP Respone: ");
-      Serial.println(httpResponseCode);
-      http.end();
+     // Serial.println(httpResponseCode);
+     // http.end();
       }
     }
     else if ((WiFi.status()== WL_CONNECTION_LOST) || (WiFi.status()== WL_DISCONNECTED))
