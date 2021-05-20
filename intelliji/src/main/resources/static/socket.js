@@ -4,6 +4,7 @@ ws.onmessage = function(data){
     showGreeting(data.data);
 }
 
+
 function showGreeting(message) {
     var arr = message.split(",");
     var deviceName = arr[1].split("=")[1];

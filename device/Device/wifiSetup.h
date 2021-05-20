@@ -16,6 +16,7 @@
 
 using namespace websockets2_generic;
 WebsocketsClient client;
+
 bool connected = false;
 
 /////WiFi function to connect to your local WiFi
@@ -34,20 +35,7 @@ void initWifi()
   Serial.println(WiFi.localIP());
 }
 
-/////Initialize websocket
-void initSocket()
-{
-  connected = client.connect(WEBSOCKET_SERVER_ADRESS, WEBSOCKET_PORT, WEBSOCKET_ADRESS_PATH);
-  if (connected) 
-  {
-    Serial.println("-----------Connected!");
-  } 
-  else 
-  {
-    Serial.println("Websocket Not Connected!");
-  }
-
-}
+/////////
 /////Websocket Callback function
 void onEventsCallback(WebsocketsEvent event, String data) 
 {
@@ -67,5 +55,20 @@ void onEventsCallback(WebsocketsEvent event, String data)
   else if (event == WebsocketsEvent::GotPong) 
   {
     Serial.println("Got a Pong!");
+  }
+}
+
+/////Initialize websocket
+void initSocket()
+{
+  connected = client.connect(WEBSOCKET_SERVER_ADRESS, WEBSOCKET_PORT, WEBSOCKET_ADRESS_PATH);
+  client.onEvent(onEventsCallback);
+  if (connected) 
+  {
+    Serial.println("-----------Connected!");
+  } 
+  else 
+  {
+    Serial.println("Websocket Not Connected!");
   }
 }
