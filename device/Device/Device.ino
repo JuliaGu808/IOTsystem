@@ -9,7 +9,7 @@
 DHT dht(DHT_PORT, DHT11);
 
 unsigned long lastTime = 0;
-unsigned long timerDelay = 1000; //10 sekunders delay
+unsigned long timerDelay = 10000; //10 sekunders delay
 
 void setup() 
 {
