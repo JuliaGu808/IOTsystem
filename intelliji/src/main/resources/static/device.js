@@ -18,11 +18,11 @@ function refresh(){
                         ("0" + recordtime.getUTCHours()).slice(-2) + ":" +
                         ("0" + recordtime.getUTCMinutes()).slice(-2) + ":" +
                         ("0" + recordtime.getUTCSeconds()).slice(-2);
-                    $("#device_data").append("<tr><td>" + item.deviceName + "</td>" +
+                    $("#device_data").append("<tr><td>" + item.deviceHolder + "</td>" +
                         "<td>" + item.temperature + "</td>" +
                         "<td>" + item.humidity + "</td>" +
                         "<td>" + dateString + "</td>" +
-                        "<td>" + item.deviceHolder + "</td></tr>");
+                        "<td>" + item.deviceName + "</td></tr>");
                 })
             }
             else{
