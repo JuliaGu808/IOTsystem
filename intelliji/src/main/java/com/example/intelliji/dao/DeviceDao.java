@@ -99,7 +99,7 @@ public class DeviceDao {
             String temperature = String.valueOf(map.get("temperature"));
             String humidity = String.valueOf(map.get("humidity"));
             String recordtime = String.valueOf(map.get("recordtime"));
-            return new DeviceEsp32Dht11(deviceHolder, deviceName, temperature, humidity, recordtime);
+            return new DeviceEsp32Dht11(deviceName, deviceHolder, temperature, humidity, recordtime);
     }
 
 }

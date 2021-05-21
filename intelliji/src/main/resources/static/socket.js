@@ -7,8 +7,8 @@ ws.onmessage = function(data){
 
 function showGreeting(message) {
     var arr = message.split(",");
-    var deviceName = arr[1].split("=")[1];
-    var deviceHolder = arr[0].split("=")[1];
+    var deviceName = arr[0].split("=")[1];
+    var deviceHolder = arr[1].split("=")[1];
     var temperature = arr[2].split("=")[1];
     var humidity = arr[3].split("=")[1];
     var record_time = arr[4].split("=")[1];

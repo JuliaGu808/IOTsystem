@@ -29,4 +29,11 @@ order by recordtime desc;
 
 select * from get_all;
 
+ALTER TABLE holders AUTO_INCREMENT = 1;
+
+ALTER TABLE devices AUTO_INCREMENT = 1;
+
+ALTER TABLE records AUTO_INCREMENT = 1;
+
+
 
