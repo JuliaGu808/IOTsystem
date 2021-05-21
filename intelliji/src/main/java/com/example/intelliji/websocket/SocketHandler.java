@@ -30,7 +30,7 @@ public class SocketHandler extends TextWebSocketHandler {
         Map value = new Gson().fromJson(message.getPayload(), Map.class);
         System.out.println("handleTextMessage "+message.getPayload());
         DeviceEsp32Dht11 device = DeviceDao.DeviceConvert(value);
-        DeviceDao.addData(device); // add to DB
+        DeviceDao.addData(device);
         for(WebSocketSession webSocketSession: sessions){
             webSocketSession.sendMessage(new TextMessage(""+device));
         }
