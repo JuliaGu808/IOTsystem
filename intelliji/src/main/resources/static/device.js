@@ -2,7 +2,7 @@ window.onload=function (){
     refresh();
 }
 
-function refresh(){
+function refresh(){ //sprint3
     $.ajax({
         url:'http://localhost:8080/DeviceDBService/all',
         type:'GET',
