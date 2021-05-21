@@ -2,7 +2,7 @@ body{
     height: 100%;
 }
 
-#table_whole {
+.table_whole {
     height: 450px;
     overflow-y: scroll;
     overflow-x: hidden;

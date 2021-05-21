@@ -1,14 +1,29 @@
 #include "hidden.h"
+////////////////////////////////////////////////////
+// hidden.h should contain following defines modified for your system.
+////////////////////////////////////////////////////
+//#define SSID_NAME "ssid"   
+//#define SSID_PASSWORD "wifiPassword"
+//#define WEBSOCKET_PORT 8080
+//#define WEBSOCKET_SERVER_ADRESS "192.168.1.10"
+//#define WEBSOCKET_ADRESS_PATH "/device"
+//#define HTTP_SERVER_ADRESS "192.168.1.5"
+//#define DEVICE_NAME "Devicename"
+//#define DEVICE_HOLDER "Holdername"
+//#define DHT_PORT 32
+//
+////////////////////////////////////////////////////
 
-const char* ssid = SSID_NAME;
-const char* password = SSID_PASSWORD;
-unsigned int attempt = 1;
+using namespace websockets2_generic;
+WebsocketsClient client;
 
-void initWifi()
+bool connected = false;
+
+/////WiFi function to connect to your local WiFi
+void initWifi() 
 {
- WiFi.begin(ssid, password);
-  Serial.print("Trying to connect to WiFi with SSID: ");
-  Serial.println(ssid);
+  unsigned int attempt = 1;
+  WiFi.begin(SSID_NAME, SSID_PASSWORD);
   while(WiFi.status() != WL_CONNECTED) 
   {
     delay(500);
@@ -18,4 +33,42 @@ void initWifi()
   }
   Serial.print("Connected to WiFi, recieved IP: ");
   Serial.println(WiFi.localIP());
+}
+
+/////////
+/////Websocket Callback function
+void onEventsCallback(WebsocketsEvent event, String data) 
+{
+  if (event == WebsocketsEvent::ConnectionOpened) 
+  {
+    Serial.println("Connnection Opened");
+  } 
+  else if (event == WebsocketsEvent::ConnectionClosed) 
+  {
+    Serial.println("Connnection Closed");
+    connected=false;
+  } 
+  else if (event == WebsocketsEvent::GotPing) 
+  {
+    Serial.println("Got a Ping!");
+  } 
+  else if (event == WebsocketsEvent::GotPong) 
+  {
+    Serial.println("Got a Pong!");
+  }
+}
+
+/////Initialize websocket
+void initSocket()
+{
+  connected = client.connect(WEBSOCKET_SERVER_ADRESS, WEBSOCKET_PORT, WEBSOCKET_ADRESS_PATH);
+  client.onEvent(onEventsCallback);
+  if (connected) 
+  {
+    Serial.println("-----------Connected!");
+  } 
+  else 
+  {
+    Serial.println("Websocket Not Connected!");
+  }
 }
