@@ -19,11 +19,13 @@ public class DeviceControler {
 
     @GetMapping("/all")
     public List<DeviceEsp32Dht11> getAll(){
-        return DeviceDao.getAllDummy();
+        return DeviceDao.getAll();
     }
 
-
-
+    @GetMapping("/delete/all")
+    public boolean deleteAll(){
+        return DeviceDao.deleteAll();
+    }
 
 }
 

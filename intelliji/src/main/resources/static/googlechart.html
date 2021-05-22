@@ -1,0 +1,164 @@
+<html>
+<head>
+  <title>Google Charts Tutorial</title>
+  <script type = "text/javascript" src = "https://www.gstatic.com/charts/loader.js">
+  </script>
+  <script src="./scripts/jquery-3.5.1.min.js"></script>
+  <script type = "text/javascript">
+    google.charts.load('current', {packages: ['corechart','line']});
+  </script>
+</head>
+
+<body>
+<div id = "container" style = "width: 550px; height: 400px; margin: 0 auto">
+</div>
+<script language = "JavaScript">
+  var time_map = {}; // {1603838847:{"Julia-Esp32Feather":17.09,"Julia-Esp32":20.07}}
+  var person_map = {}; // {"Julia-Esp32Feather": [1603838847, 1603838848], "Julia-Esp32": [1603838847, 1603838848]}
+  var chart_map = {}; // {1603838847:{"Julia-Esp32Feather":12.0,"Julia-Esp32":23.90},1603838857:{"Julia-Esp32Feather":12.0,"Julia-Esp32":23.90}}
+  var person_temp = {}; // {"Julia-Esp32Feather": [12.5, 12.9], "Julia-Esp32": [29.0, 20.9]}
+
+  function getDate(){
+    $.ajax({
+      url:'http://localhost:8080/DeviceDBService/all',
+      type:'GET',
+      success:[function (result){
+        if(result!==null){
+
+          result.forEach(function (item){
+            var obj = {};
+            var person = item.deviceHolder+"-"+item.deviceName;
+            var temperature = Number(item.temperature);
+            var unix = Number(item.recordtime);
+
+            obj[person]=temperature;
+            try{
+              time_obj=time_map[unix];
+              time_obj[person]=temperature;
+              time_map[unix] = time_obj;
+            }catch (error){
+              time_map[unix]=obj;
+            }
+
+            try{
+              person_list=person_map[person];
+              person_list.unshift(unix);
+              person_map[person] = person_list;
+
+              temp_list=person_temp[person];
+              temp_list.unshift(temperature);
+              person_temp[person] = temp_list;
+            }catch (error){
+              person_map[person] = [unix];
+              person_temp[person] = [temperature];
+            }
+          });
+          timeConvert();
+          google.charts.setOnLoadCallback(drawChart);
+        }
+        else{
+        }
+
+      }],
+      error : [function(error)
+      {
+        alert(error);
+      }]
+    });
+  }
+
+  function timeConvert(){
+    var min = 9999999999;
+    var max = 0;
+    for (const [key, value] of Object.entries(person_map)) {
+      if(value[0]>max) max = value[0];
+      if(value[value.length-1]<min) min = value[value.length-1];
+    }
+    console.log(max, min);
+    var gap = Math.floor(Math.abs(max-min)/10);
+    var gap_list = [];
+    for(let i = 0; i < 10; i++){
+      var value = max+gap*i;
+      gap_list.push(value);
+    }
+
+    for (const [key, value] of Object.entries(person_map)) {
+
+      var temp_list=[];
+      value.forEach(function (item){
+        if(item<=min && item>=max) temp_list.push(item);
+      });
+      for(let i = 0; i < gap_list.length-1; i++){
+        var obj = {};
+        var temps = 0;
+        var count = 0;
+        for(let j = 0; j < value.length; j++){
+          if(temp_list[j]<=gap_list[i+1]&&temp_list[j]>=gap_list[0]){
+            try{
+              temps += time_map[temp_list[j]][key];
+              count++;
+            }catch (error){
+            }
+
+          }
+        }
+
+        var ave_temp = count !== 0 ? temps/count : 0;
+
+        obj[key]=ave_temp.toFixed(2);
+        try{
+          temp_obj = chart_map[gap_list[i]];
+          temp_obj[key]=ave_temp.toFixed(2);
+        }catch (error){
+          chart_map[gap_list[i]]=obj;
+
+        }
+      }
+
+    }
+  }
+
+  function drawChart() {
+    var row_num = Object.keys(chart_map).length;
+    var rows = [];
+
+    var data = new google.visualization.DataTable();
+    data.addColumn('string', 'recordtime');
+    let firstValue = Object.values(chart_map)[0];
+    for (const [key, value] of Object.entries(firstValue)) {
+      data.addColumn('number', key);
+    }
+    for (const [keytime, value] of Object.entries(chart_map)) {
+      var recordtime = new Date(keytime * 1000);
+      var dateString = ("0" + recordtime.getUTCHours()).slice(-2) + ":" +
+              ("0" + recordtime.getUTCMinutes()).slice(-2) + ":" +
+              ("0" + recordtime.getUTCSeconds()).slice(-2);
+      temp = [dateString];
+      for (const [key, tempvalue] of Object.entries(value)){
+        temp.push(Number(tempvalue));
+      }
+      rows.push(temp);
+    }
+    data.addRows(rows);
+
+    // Set chart options
+    var options = {'title' : 'Average Temperatures of Holder-Device',
+      hAxis: {
+        title: 'Recordtime'
+      },
+      vAxis: {
+        title: 'Temperature'
+      },
+      'width':550,
+      'height':400
+    };
+
+    // Instantiate and draw the chart.
+    var chart = new google.visualization.LineChart(document.getElementById('container'));
+    chart.draw(data, options);
+  }
+  getDate();
+
+</script>
+</body>
+</html>
