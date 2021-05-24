@@ -107,9 +107,10 @@
     }
 
     function timeConvert() {
-        var min = 9999999999;
-        var max = 0;
+        
         for (const [key, value] of Object.entries(person_map)) {
+            var min = 9999999999;
+            var max = 0;
             if (value[0] > max) max = value[0];
             if (value[value.length - 1] < min) min = value[value.length - 1];
         }
