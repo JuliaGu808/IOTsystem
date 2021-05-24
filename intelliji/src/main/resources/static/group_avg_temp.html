@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Column with Data Labels</title>
+    <script src="./scripts/jquery-3.5.1.min.js"></script>
+    <style>
+      
+        #chart {
+      max-width: 650px;
+      margin: 35px auto;
+    }
+      
+    </style>
+
+    <script>
+      window.Promise ||
+        document.write(
+          '<script src="https://cdn.jsdelivr.net/npm/promise-polyfill@8/dist/polyfill.min.js"><\/script>'
+        )
+      window.Promise ||
+        document.write(
+          '<script src="https://cdn.jsdelivr.net/npm/eligrey-classlist-js-polyfill@1.2.20171210/classList.min.js"><\/script>'
+        )
+      window.Promise ||
+        document.write(
+          '<script src="https://cdn.jsdelivr.net/npm/findindex_polyfill_mdn"><\/script>'
+        )
+    </script>
+
+    
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    
+
+    <script>
+      // Replace Math.random() with a pseudo-random number generator to get reproducible results in e2e tests
+      // Based on https://gist.github.com/blixt/f17b47c62508be59987b
+      var _seed = 42;
+      Math.random = function() {
+        _seed = _seed * 16807 % 2147483647;
+        return (_seed - 1) / 2147483646;
+      };
+
+
+
+
+    </script>
+
+    
+  </head>
+
+  <body>
+     <div id="chart"></div>
+
+    <script>
+      //function getAvg() {
+      var totallist = [];
+      window.onload=function () {
+        $.ajax({
+          url: 'http://localhost:8080/DeviceDBService/avg/temperature',
+          type: 'GET',
+          success: [function (result) {
+            if (result !== null) {
+              console.log(result);
+              totallist = result;
+              var options = {
+                series: [{
+                  name: 'Temperature',
+                  data: [totallist[0]["temperature"],totallist[1]["temperature"],totallist[2]["temperature"],totallist[3]["temperature"]]
+
+                  //getAvg();
+
+
+                }],
+                chart: {
+                  height: 350,
+                  type: 'bar',
+                },
+                plotOptions: {
+                  bar: {
+                    borderRadius: 10,
+                    dataLabels: {
+                      position: 'top', // top, center, bottom
+                    },
+                  }
+                },
+                dataLabels: {
+                  enabled: true,
+                  formatter: function (val) {
+                    return val + "c";
+                  },
+                  offsetY: -20,
+                  style: {
+                    fontSize: '12px',
+                    colors: ["#304758"]
+                  }
+                },
+
+                xaxis: {
+                  categories: [totallist[0]["deviceHolder"],totallist[1]["deviceHolder"],totallist[2]["deviceHolder"],totallist[3]["deviceHolder"]],
+                  position: 'top',
+                  axisBorder: {
+                    show: false
+                  },
+                  axisTicks: {
+                    show: false
+                  },
+                  crosshairs: {
+                    fill: {
+                      type: 'gradient',
+                      gradient: {
+                        colorFrom: '#D8E3F0',
+                        colorTo: '#BED1E6',
+                        stops: [0, 100],
+                        opacityFrom: 0.4,
+                        opacityTo: 0.5,
+                      }
+                    }
+                  },
+                  tooltip: {
+                    enabled: true,
+                  }
+                },
+                yaxis: {
+                  axisBorder: {
+                    show: false
+                  },
+                  axisTicks: {
+                    show: false,
+                  },
+                  labels: {
+                    show: false,
+                    formatter: function (val) {
+                      return val + "c";
+                    }
+                  }
+
+                },
+                title: {
+                  text: 'Average recorded apartment temperature in May 2021',
+                  floating: true,
+                  offsetY: 330,
+                  align: 'center',
+                  style: {
+                    color: '#444'
+                  }
+                }
+              };
+
+              var chart = new ApexCharts(document.querySelector("#chart"), options);
+              chart.render();
+              /*result.forEach(function (item) {
+                var obj = {};
+                var name = item.deviceHolder;
+                var temperature = Number(item.temperature);
+              }) */
+            }
+          }]
+        })
+      }
+
+
+
+      
+      
+    </script>
+
+    
+  </body>
+</html>

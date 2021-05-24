@@ -1,17 +1,14 @@
 package com.example.intelliji.dao;
 
+import com.example.intelliji.model.AvgTemperature;
 import com.example.intelliji.model.DeviceEsp32Dht11;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 
-import java.io.FileInputStream;
 import java.sql.*;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.*;
-import java.util.Date;
 
 public class DeviceDao {
 
@@ -131,6 +128,26 @@ public class DeviceDao {
             String humidity = String.valueOf(map.get("humidity"));
             String recordtime = String.valueOf(map.get("recordtime"));
             return new DeviceEsp32Dht11(deviceName, deviceHolder, temperature, humidity, recordtime);
+    }
+
+    public static List<AvgTemperature> getAvg(){
+        List<AvgTemperature> devicelist = new ArrayList<>();
+        try(
+                Connection connection = DriverManager.getConnection(System.getenv("connectionstring"),
+                        System.getenv("spring.datasource.username"),
+                        System.getenv("spring.datasource.password"));
+                Statement statement = connection.createStatement();
+                ResultSet resultSet = statement.executeQuery("select * from avg_temp");
+        ){
+            while (resultSet.next()){
+                String deviceHolder = resultSet.getString("deviceHolder");
+                String temperature = resultSet.getString("temperature");
+                devicelist.add(new AvgTemperature(deviceHolder, temperature));
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return devicelist;
     }
 
 }
