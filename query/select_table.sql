@@ -35,5 +35,10 @@ ALTER TABLE devices AUTO_INCREMENT = 1;
 
 ALTER TABLE records AUTO_INCREMENT = 1;
 
+SET FOREIGN_KEY_CHECKS = 0; 
+truncate records;
+truncate table devices; 
+truncate table holders; 
+SET FOREIGN_KEY_CHECKS = 1;
 
 
