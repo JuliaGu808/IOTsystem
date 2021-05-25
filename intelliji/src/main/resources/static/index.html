@@ -2,18 +2,24 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-  <link href="./bootstrap-4.4.1.min.css" rel="stylesheet">
-    <link href="./main.css" rel="stylesheet">
-    <script src="./device.js"></script>
-    <script src="./jquery-3.5.1.min.js"></script>
+    <title>Home</title>
+    <link href="./css/bootstrap-4.4.1.min.css" rel="stylesheet">
+    <link href="./css/main.css" rel="stylesheet">
+    <script src="./scripts/device.js"></script>
+    <script src="./scripts/jquery-3.5.1.min.js"></script>
 </head>
 <body>
 <noscript><h2 style="color: #ff0000">Seems your browser doesn't support Javascript! Websocket relies on Javascript being
     enabled. Please enable
     Javascript and reload this page!</h2></noscript>
 <div class="container">
-    <h2>IOT 20 data board <button style="float: right " class="btn btn-info" onclick="refresh()">Refresh</button></h2>
+    <h2 style="margin-top: 10px">IOT 20 data board
+        <button style="float: right ; margin: 2px" class="btn btn-danger" onclick="cleanDB()">Clean data base</button>
+        <a href="googlechart.html" target="_blank"><button style="float: right; margin: 2px " class="btn btn-primary">Google Diagram</button></a>
+        <a href="group_avg_temp.html" target="_blank"><button style="float: right; margin: 2px " class="btn btn-primary">Apex Diagram</button></a>
+        <a href="websocket.html" target="_blank"><button style="float: right; margin: 2px " class="btn btn-success">Real time</button></a>
+        <button style="float: right; margin: 2px" class="btn btn-warning" onclick="refresh()">Refresh</button>
+    </h2>
 
     <div class="row table_whole">
         <div class="col-md-12" >

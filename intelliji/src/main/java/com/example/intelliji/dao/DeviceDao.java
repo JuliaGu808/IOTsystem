@@ -1,17 +1,14 @@
 package com.example.intelliji.dao;
 
+import com.example.intelliji.model.AvgTemperature;
 import com.example.intelliji.model.DeviceEsp32Dht11;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 
-import java.io.FileInputStream;
 import java.sql.*;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.*;
-import java.util.Date;
 
 public class DeviceDao {
 
@@ -70,7 +67,7 @@ public class DeviceDao {
         return false;
     }
 
-    public static List<DeviceEsp32Dht11> getAllDummy(){
+    public static List<DeviceEsp32Dht11> getAll(){
         List<DeviceEsp32Dht11> devicelist = new ArrayList<>();
         try(
                 Connection connection = DriverManager.getConnection(System.getenv("connectionstring"),
@@ -93,6 +90,37 @@ public class DeviceDao {
         return devicelist;
     }
 
+    public static boolean deleteAll(){
+        String nokeycheckQuery = "SET FOREIGN_KEY_CHECKS = 0";
+        String deleteRecordsQuery = "truncate records";
+        String deleteDevicesQuery = "truncate table devices";
+        String deleteHoldersQuery = "truncate table holders";
+        String keycheckQuery = "SET FOREIGN_KEY_CHECKS = 1";
+        String query =
+                "SET FOREIGN_KEY_CHECKS = 0;truncate records;truncate table devices;truncate table holders;SET FOREIGN_KEY_CHECKS = 1;";
+        try(
+                Connection connection = DriverManager.getConnection(System.getenv("connectionstring"),
+                        System.getenv("spring.datasource.username"),
+                        System.getenv("spring.datasource.password"));
+                PreparedStatement statement1 = connection.prepareStatement(nokeycheckQuery);
+                PreparedStatement statement2 = connection.prepareStatement(deleteRecordsQuery);
+                PreparedStatement statement3 = connection.prepareStatement(deleteDevicesQuery);
+                PreparedStatement statement4 = connection.prepareStatement(deleteHoldersQuery);
+                PreparedStatement statement5 = connection.prepareStatement(keycheckQuery);
+        ){
+            statement1.executeUpdate();
+            statement2.executeUpdate();
+            statement3.executeUpdate();
+            statement4.executeUpdate();
+            statement5.executeUpdate();
+            return true;
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
     public static DeviceEsp32Dht11 DeviceConvert(Map map){
             String deviceHolder = String.valueOf(map.get("deviceHolder"));
             String deviceName = String.valueOf(map.get("deviceName"));
@@ -100,6 +128,26 @@ public class DeviceDao {
             String humidity = String.valueOf(map.get("humidity"));
             String recordtime = String.valueOf(map.get("recordtime"));
             return new DeviceEsp32Dht11(deviceName, deviceHolder, temperature, humidity, recordtime);
+    }
+
+    public static List<AvgTemperature> getAvg(){
+        List<AvgTemperature> devicelist = new ArrayList<>();
+        try(
+                Connection connection = DriverManager.getConnection(System.getenv("connectionstring"),
+                        System.getenv("spring.datasource.username"),
+                        System.getenv("spring.datasource.password"));
+                Statement statement = connection.createStatement();
+                ResultSet resultSet = statement.executeQuery("select * from avg_temp");
+        ){
+            while (resultSet.next()){
+                String deviceHolder = resultSet.getString("deviceHolder");
+                String temperature = resultSet.getString("temperature");
+                devicelist.add(new AvgTemperature(deviceHolder, temperature));
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return devicelist;
     }
 
 }

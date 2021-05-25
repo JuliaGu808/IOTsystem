@@ -2,7 +2,7 @@ window.onload=function (){
     refresh();
 }
 
-function refresh(){
+function refresh(){ //sprint3
     $.ajax({
         url:'http://localhost:8080/DeviceDBService/all',
         type:'GET',
@@ -35,3 +35,23 @@ function refresh(){
     });
 
 }
+
+function cleanDB(){
+    $.ajax({
+        url:'http://localhost:8080/DeviceDBService/delete/all',
+        type:'GET',
+        success:[function (result){
+            if(result===true){
+                refresh();
+            }else {
+                alert("can not clean data base");
+            }
+
+        }],
+        error : [function(error)
+        {
+            alert(error);
+        }]
+    });
+}
+

@@ -1,6 +1,7 @@
 package com.example.intelliji.controler;
 
 import com.example.intelliji.dao.DeviceDao;
+import com.example.intelliji.model.AvgTemperature;
 import com.example.intelliji.model.DeviceEsp32Dht11;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,11 +20,16 @@ public class DeviceControler {
 
     @GetMapping("/all")
     public List<DeviceEsp32Dht11> getAll(){
-        return DeviceDao.getAllDummy();
+        return DeviceDao.getAll();
     }
 
+    @GetMapping("/delete/all")
+    public boolean deleteAll(){
+        return DeviceDao.deleteAll();
+    }
 
-
+    @GetMapping("/avg/temperature")
+    public List<AvgTemperature> getAvg(){ return DeviceDao.getAvg(); }
 
 }
 
