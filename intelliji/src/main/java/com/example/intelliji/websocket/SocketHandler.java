@@ -23,6 +23,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class SocketHandler extends TextWebSocketHandler {
 
     List<WebSocketSession> sessions = new CopyOnWriteArrayList<>();
+    List<WebSocketSession> deviceSessions = new CopyOnWriteArrayList<>();
 
     @Override
     public void handleTextMessage(WebSocketSession session, TextMessage message)
@@ -31,6 +32,8 @@ public class SocketHandler extends TextWebSocketHandler {
         System.out.println("handleTextMessage "+message.getPayload());
         DeviceEsp32Dht11 device = DeviceDao.DeviceConvert(value);
         DeviceDao.addData(device);
+        deviceSessions.add(session);
+        sessions.remove(session);
         for(WebSocketSession webSocketSession: sessions){
             webSocketSession.sendMessage(new TextMessage(""+device));
         }
