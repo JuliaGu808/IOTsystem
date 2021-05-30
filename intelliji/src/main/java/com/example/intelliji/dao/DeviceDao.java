@@ -141,8 +141,9 @@ public class DeviceDao {
         ){
             while (resultSet.next()){
                 String deviceHolder = resultSet.getString("deviceHolder");
+                String deviceName = resultSet.getString("deviceName");
                 String temperature = resultSet.getString("temperature");
-                devicelist.add(new AvgTemperature(deviceHolder, temperature));
+                devicelist.add(new AvgTemperature(deviceHolder, deviceName, temperature));
             }
         }catch (Exception e){
             e.printStackTrace();
