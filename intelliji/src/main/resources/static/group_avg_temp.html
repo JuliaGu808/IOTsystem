@@ -65,10 +65,13 @@
             if (result !== null) {
               console.log(result);
               totallist = result;
+              temp_list = totallist.map(each=>each["temperature"]);
+              holder_list = totallist.map(each=>(each["deviceHolder"]+"-"+each["deviceName"]));
+
               var options = {
                 series: [{
                   name: 'Temperature',
-                  data: [totallist[0]["temperature"],totallist[1]["temperature"],totallist[2]["temperature"],totallist[3]["temperature"]]
+                  data: temp_list, //[totallist[0]["temperature"],totallist[1]["temperature"],totallist[2]["temperature"],totallist[3]["temperature"]]
 
                   //getAvg();
 
@@ -99,7 +102,7 @@
                 },
 
                 xaxis: {
-                  categories: [totallist[0]["deviceHolder"],totallist[1]["deviceHolder"],totallist[2]["deviceHolder"],totallist[3]["deviceHolder"]],
+                  categories: holder_list, //[totallist[0]["deviceHolder"],totallist[1]["deviceHolder"],totallist[2]["deviceHolder"],totallist[3]["deviceHolder"]],
                   position: 'top',
                   axisBorder: {
                     show: false

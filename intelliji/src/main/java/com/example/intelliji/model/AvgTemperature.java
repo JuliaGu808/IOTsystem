@@ -4,14 +4,16 @@ import java.io.Serializable;
 
 public class AvgTemperature implements Serializable {
     private String deviceHolder;
+    private String deviceName;
     private String temperature;
 
         public AvgTemperature() {}
 
-        public AvgTemperature(String deviceHolder, String temperature) {
-            this.deviceHolder = deviceHolder;
-            this.temperature = temperature;
-        }
+    public AvgTemperature(String deviceHolder, String deviceName, String temperature) {
+        this.deviceHolder = deviceHolder;
+        this.deviceName = deviceName;
+        this.temperature = temperature;
+    }
 
     public String getDeviceHolder() {
         return deviceHolder;
@@ -19,6 +21,14 @@ public class AvgTemperature implements Serializable {
 
     public void setDeviceHolder(String deviceHolder) {
         this.deviceHolder = deviceHolder;
+    }
+
+    public String getDeviceName() {
+        return deviceName;
+    }
+
+    public void setDeviceName(String deviceName) {
+        this.deviceName = deviceName;
     }
 
     public String getTemperature() {
